@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>Connecting Gmail…</title>
+<style>
+body{font-family:'DM Sans',sans-serif;display:flex;align-items:center;
+justify-content:center;height:100vh;margin:0;background:#f1f5f9}
+.box{text-align:center;padding:40px;background:#fff;border-radius:14px;
+box-shadow:0 8px 32px rgba(0,0,0,.12);max-width:320px}
+.icon{font-size:2.5rem;margin-bottom:12px}
+h3{color:#2563eb;margin:0 0 6px;font-size:1.1rem}
+p{color:#64748b;font-size:.84rem;margin:0}
+</style></head>
+<body>
+<div class="box">
+  <div class="icon">🔗</div>
+  <h3 id="title">Connecting Gmail…</h3>
+  <p id="msg">This window will close automatically.</p>
+</div>
+<script>
+  const hash = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  const token = params.get('access_token');
+  if (token && window.opener) {
+    window.opener.postMessage({ type: 'gmail_token', access_token: token }, '*');
+    document.getElementById('title').textContent = '✅ Gmail Connected!';
+    document.getElementById('msg').textContent = 'Closing window…';
+    setTimeout(() => window.close(), 1200);
+  } else {
+    document.getElementById('title').style.color = '#dc2626';
+    document.getElementById('title').textContent = 'Authentication Failed';
+    document.getElementById('msg').textContent = 'Please close this window and try again.';
+  }
+</script>
+</body>
+</html>
